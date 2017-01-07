@@ -9,19 +9,17 @@ import { WeatherService } from '../../services/weather.service';
 })
 export class WeatherPage implements OnInit {
 
-    state: string;
-    city: string;
+    zmw: string;
     weather: any;
     searchStr: string;
     results: any[];
     
     constructor(private _weatherService:WeatherService) {
-        this.state = 'MA';
-        this.city = 'Boston';
     }
 
     ngOnInit() {
-        this._weatherService.getWeather(this.city, this.state)
+        this.getDefaultCity();
+        this._weatherService.getWeather(this.zmw)
             .subscribe(weather => {
                 this.weather = weather.current_observation;
             })
@@ -32,5 +30,18 @@ export class WeatherPage implements OnInit {
             .subscribe(res => {
                 this.results = res.RESULTS;
             })
+    }
+
+    chooseCity(city){
+        this.results = [];
+        this.searchStr = '';
+        this._weatherService.getWeather(city.zmw)
+            .subscribe(weather => {
+                this.weather = weather.current_observation;
+            })
+    }
+
+    getDefaultCity(){
+        this.zmw = '00000.1.08221';
     }
 }
