@@ -11,6 +11,7 @@ export class WeatherPage implements OnInit {
 
     state: string;
     city: string;
+    weather: any;
     
     constructor(private _weatherService:WeatherService) {
         this.state = 'MA';
@@ -20,7 +21,7 @@ export class WeatherPage implements OnInit {
     ngOnInit() {
         this._weatherService.getWeather(this.city, this.state)
             .subscribe(weather => {
-                console.log(weather);
+                this.weather = weather.current_observation;
             })
     }
 }
