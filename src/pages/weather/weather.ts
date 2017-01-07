@@ -15,6 +15,7 @@ export class WeatherPage implements OnInit {
     results: any[];
     
     constructor(private _weatherService:WeatherService) {
+
     }
 
     ngOnInit() {
@@ -42,6 +43,18 @@ export class WeatherPage implements OnInit {
     }
 
     getDefaultCity(){
-        this.zmw = '00000.1.08221';
+        if (localStorage.getItem('city') !== null){
+            this.zmw = JSON.parse(localStorage.getItem('city')).zmw;
+        } else {
+            this.zmw = '00000.1.08221';
+        }
+    }
+
+    ionViewWillEnter() {
+        this.getDefaultCity();
+        this._weatherService.getWeather(this.zmw)
+            .subscribe(weather => {
+                this.weather = weather.current_observation;
+            })
     }
 }
