@@ -12,6 +12,8 @@ export class WeatherPage implements OnInit {
     state: string;
     city: string;
     weather: any;
+    searchStr: string;
+    results: any[];
     
     constructor(private _weatherService:WeatherService) {
         this.state = 'MA';
@@ -22,6 +24,13 @@ export class WeatherPage implements OnInit {
         this._weatherService.getWeather(this.city, this.state)
             .subscribe(weather => {
                 this.weather = weather.current_observation;
+            })
+    }
+
+    getQuery(){
+        this._weatherService.searchCities(this.searchStr)
+            .subscribe(res => {
+                this.results = res.RESULTS;
             })
     }
 }
